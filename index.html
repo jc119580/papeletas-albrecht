@@ -108,7 +108,7 @@
         </div>
     </header>
 
-    <!-- APP CONTAINER -->
+    <!-- CONTAINER PRINCIPAL -->
     <div class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col md:flex-row gap-6">
 
         <aside class="w-full md:w-64 bg-white rounded-xl shadow-sm border border-slate-200 p-4 shrink-0 no-print flex flex-col justify-between">
@@ -131,7 +131,7 @@
             </nav>
             <div class="mt-8 pt-4 border-t border-slate-100 text-xs text-slate-400 text-center space-y-2">
                 <p class="font-semibold text-slate-500">HOSPITAL I ALBRECHT</p>
-                <p>Gestión de Personal v4.2</p>
+                <p>Gestión de Personal v4.3</p>
                 <button onclick="cerrarSesion()" class="w-full py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-semibold flex items-center justify-center gap-1">
                     <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Cerrar Sesión
                 </button>
@@ -366,7 +366,7 @@
         </main>
     </div>
 
-    <!-- MODAL COLABORADOR -->
+    <!-- MODALES -->
     <div id="modal-colaborador" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-xl shadow-xl border border-slate-200 max-w-md w-full p-6 space-y-4">
             <h3 id="modal-colaborador-title" class="text-base font-bold text-slate-800">Agregar Nuevo Colaborador</h3>
@@ -385,7 +385,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT DE CONEXIÓN A SUPABASE Y LÓGICA -->
+    <!-- SCRIPT CORREGIDO PARA UUID DE SUPABASE -->
     <script>
         const SUPABASE_URL = "https://brdyfumyyecgywhxxfp.supabase.co";
         const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJyZHlmdW15eWVjY2d5d2h4eGZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE5ODkxNjgsImV4cCI6MjEwNzU2NTE2OH0.jMPHmrZsmnowfRVA7vtSSK-utinmBllIx5jHvbO7g1o";
@@ -435,11 +435,17 @@
         async function loadDataFromSupabase() {
             try {
                 const { data: colabData, error: colabError } = await _supabase.from('colaboradores').select('*');
-                if (colabError) throw colabError;
+                if (colabError) {
+                    console.error("Error al leer colaboradores:", colabError);
+                    alert("Error al conectar con la tabla colaboradores de Supabase: " + colabError.message);
+                    return;
+                }
                 colaboradores = colabData || [];
 
                 const { data: papData, error: papError } = await _supabase.from('papeletas').select('*');
-                if (papError) throw papError;
+                if (papError) {
+                    console.error("Error al leer papeletas:", papError);
+                }
                 papeletas = (papData || []).map(p => ({
                     id: p.id,
                     colaboradorId: p.colaborador_id,
@@ -461,7 +467,7 @@
                 renderPlanillaTable();
                 populateColaboradoresSelect();
             } catch (err) {
-                console.error("Error al cargar desde Supabase:", err);
+                console.error("Error de conexión:", err);
             }
         }
 
@@ -608,7 +614,6 @@
             const { error } = await _supabase.from('papeletas').insert([nuevaPapeleta]);
             if (error) { 
                 alert("Error Supabase Papeleta: " + error.message);
-                showToast('Error', 'No se pudo guardar la papeleta', false); 
                 return; 
             }
 
@@ -692,9 +697,7 @@
         async function guardarColaboradorModal(e) {
             e.preventDefault();
             const id = document.getElementById('colab-id').value;
-            const newId = id || Date.now().toString();
             const payload = {
-                id: newId,
                 dni: document.getElementById('colab-dni').value,
                 nombres: document.getElementById('colab-nombres').value.toUpperCase(),
                 apellidos: document.getElementById('colab-apellidos').value.toUpperCase(),
@@ -711,7 +714,6 @@
 
             if (res.error) {
                 alert("Error Supabase Colaborador: " + res.error.message);
-                showToast('Error', 'No se pudo guardar el trabajador', false);
                 return;
             }
 
