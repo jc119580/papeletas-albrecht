@@ -21,7 +21,7 @@
 </head>
 <body class="bg-slate-100 font-sans text-slate-800 antialiased min-h-screen flex flex-col relative">
 
-    <!-- MODAL PANTALLA DE LOGIN -->
+    <!-- LOGIN MODAL -->
     <div id="login-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-md w-full overflow-hidden">
             <div class="bg-blue-900 p-6 text-center text-white space-y-3">
@@ -100,62 +100,50 @@
                 <div class="flex items-center space-x-3 border-l border-blue-800 pl-4">
                     <div class="w-8 h-8 rounded-full bg-blue-700 flex items-center justify-center font-bold text-xs border border-blue-400">HA</div>
                     <span id="user-display-name" class="font-medium text-xs hidden lg:inline">RRHH Albrecht</span>
-                    <button onclick="cerrarSesion()" title="Cerrar Sesión" class="p-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-semibold transition-colors flex items-center gap-1 shadow-sm">
-                        <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
-                        <span class="hidden sm:inline">Salir</span>
+                    <button onclick="cerrarSesion()" class="p-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-semibold flex items-center gap-1 shadow-sm">
+                        <i data-lucide="log-out" class="w-3.5 h-3.5"></i> <span class="hidden sm:inline">Salir</span>
                     </button>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- CONTAINER PRINCIPAL -->
+    <!-- APP CONTAINER -->
     <div class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col md:flex-row gap-6">
 
-        <!-- ASIDE MENU -->
         <aside class="w-full md:w-64 bg-white rounded-xl shadow-sm border border-slate-200 p-4 shrink-0 no-print flex flex-col justify-between">
             <nav class="space-y-1">
                 <button onclick="switchTab('dashboard')" id="nav-dashboard" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors bg-blue-600 text-white">
-                    <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
-                    <span>Dashboard</span>
+                    <i data-lucide="layout-dashboard" class="w-4 h-4"></i> <span>Dashboard</span>
                 </button>
                 <button onclick="switchTab('papeleta')" id="nav-papeleta" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors text-slate-600 hover:bg-slate-100">
-                    <i data-lucide="file-plus-2" class="w-4 h-4"></i>
-                    <span>Registrar Papeleta</span>
+                    <i data-lucide="file-plus-2" class="w-4 h-4"></i> <span>Registrar Papeleta</span>
                 </button>
                 <button onclick="switchTab('historial')" id="nav-historial" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors text-slate-600 hover:bg-slate-100">
-                    <i data-lucide="file-text" class="w-4 h-4"></i>
-                    <span>Historial de Papeletas</span>
+                    <i data-lucide="file-text" class="w-4 h-4"></i> <span>Historial de Papeletas</span>
                 </button>
                 <button onclick="switchTab('colaboradores')" id="nav-colaboradores" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors text-slate-600 hover:bg-slate-100">
-                    <i data-lucide="users" class="w-4 h-4"></i>
-                    <span>Directorio de Personal</span>
+                    <i data-lucide="users" class="w-4 h-4"></i> <span>Directorio de Personal</span>
                 </button>
                 <button onclick="switchTab('planilla')" id="nav-planilla" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors text-slate-600 hover:bg-slate-100">
-                    <i data-lucide="calculator" class="w-4 h-4"></i>
-                    <span>Cierre de Planilla</span>
+                    <i data-lucide="calculator" class="w-4 h-4"></i> <span>Cierre de Planilla</span>
                 </button>
             </nav>
-
             <div class="mt-8 pt-4 border-t border-slate-100 text-xs text-slate-400 text-center space-y-2">
                 <p class="font-semibold text-slate-500">HOSPITAL I ALBRECHT</p>
-                <p>Gestión de Personal v4.1</p>
+                <p>Gestión de Personal v4.2</p>
                 <button onclick="cerrarSesion()" class="w-full py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-semibold flex items-center justify-center gap-1">
                     <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Cerrar Sesión
                 </button>
             </div>
         </aside>
 
-        <!-- MAIN -->
         <main class="flex-1 no-print">
-
-            <!-- DASHBOARD -->
             <section id="tab-dashboard" class="space-y-6">
                 <div>
                     <h2 class="text-xl font-bold text-slate-800">Panel General de Ausentismo y Permisos</h2>
-                    <p class="text-xs text-slate-500">Métricas y resumen en tiempo real sincronizado con Supabase.</p>
+                    <p class="text-xs text-slate-500">Métricas y resumen en tiempo real del Hospital I Albrecht - EsSalud.</p>
                 </div>
-
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-4">
                         <div class="p-3 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="files" class="w-6 h-6"></i></div>
@@ -176,12 +164,7 @@
                 </div>
 
                 <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-4">
-                    <div class="flex items-center justify-between">
-                        <h3 class="text-base font-bold text-slate-800">Últimas Papeletas Registradas</h3>
-                        <button onclick="switchTab('historial')" class="text-xs font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1">
-                            Ver historial completo <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
-                        </button>
-                    </div>
+                    <h3 class="text-base font-bold text-slate-800">Últimas Papeletas Registradas</h3>
                     <div class="overflow-x-auto">
                         <table class="w-full text-xs text-left">
                             <thead class="bg-slate-50 text-slate-500 uppercase font-semibold border-b border-slate-200">
@@ -199,19 +182,16 @@
                 </div>
             </section>
 
-            <!-- REGISTRO PAPELETA -->
             <section id="tab-papeleta" class="hidden space-y-6">
                 <div>
                     <h2 class="text-xl font-bold text-slate-800">Registro de Papeleta Digital</h2>
                     <p class="text-xs text-slate-500">Ingrese las papeletas de permiso o licencias sin goce del Hospital I Albrecht.</p>
                 </div>
-
                 <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 max-w-3xl">
                     <form id="form-papeleta" onsubmit="guardarPapeleta(event)" class="space-y-4">
                         <div>
                             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Seleccionar Trabajador *</label>
                             <input type="text" id="papeleta-colaborador-search" placeholder="Filtrar por DNI, Nombres o Apellidos..." oninput="filtrarColaboradoresSelect(this.value)" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:outline-none mb-2">
-                            
                             <select id="papeleta-colaborador-id" required class="w-full text-xs p-2.5 rounded-lg border border-slate-300 bg-slate-50 focus:ring-2 focus:ring-blue-500 focus:outline-none">
                                 <option value="">-- Seleccione un trabajador de la lista --</option>
                             </select>
@@ -262,7 +242,6 @@
                         <div>
                             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Foto o Escaneo de Papeleta Física</label>
                             <input type="file" id="papeleta-foto" accept="image/*" onchange="previewImagen(this)" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                            
                             <div id="container-preview" class="hidden mt-3 p-2 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between">
                                 <span class="text-xs text-emerald-700 font-semibold flex items-center gap-1"><i data-lucide="check-circle-2" class="w-4 h-4"></i> Imagen cargada</span>
                                 <img id="img-preview" class="h-14 w-14 object-cover rounded border border-slate-300">
@@ -279,7 +258,6 @@
                 </div>
             </section>
 
-            <!-- HISTORIAL -->
             <section id="tab-historial" class="hidden space-y-6">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
@@ -288,7 +266,6 @@
                     </div>
                     <input type="text" id="filter-historial-search" oninput="renderHistorialTable()" placeholder="Buscar por DNI o Apellidos..." class="text-xs p-2.5 rounded-lg border border-slate-300 w-64">
                 </div>
-
                 <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                     <div class="overflow-x-auto">
                         <table class="w-full text-xs text-left">
@@ -311,7 +288,6 @@
                 </div>
             </section>
 
-            <!-- DIRECTORIO COLABORADORES -->
             <section id="tab-colaboradores" class="hidden space-y-6">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
@@ -322,12 +298,10 @@
                         <i data-lucide="user-plus" class="w-4 h-4"></i> Agregar Trabajador
                     </button>
                 </div>
-
                 <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-3">
                     <i data-lucide="search" class="w-4 h-4 text-slate-400"></i>
                     <input type="text" id="search-colaborador-input" oninput="renderColaboradoresTable()" placeholder="Buscar trabajador por Nombres, Apellidos, DNI o Área..." class="w-full text-xs focus:outline-none">
                 </div>
-
                 <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                     <div class="overflow-x-auto">
                         <table class="w-full text-xs text-left">
@@ -346,7 +320,6 @@
                 </div>
             </section>
 
-            <!-- CIERRE PLANILLA -->
             <section id="tab-planilla" class="hidden space-y-6">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
@@ -357,7 +330,6 @@
                         <i data-lucide="printer" class="w-4 h-4"></i> Imprimir Reporte Oficial
                     </button>
                 </div>
-
                 <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex flex-wrap items-center gap-4">
                     <div>
                         <label class="block text-xs font-bold text-slate-600 mb-1">Filtrar por Mes de Cierre:</label>
@@ -372,7 +344,6 @@
                         </select>
                     </div>
                 </div>
-
                 <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                     <div class="overflow-x-auto">
                         <table class="w-full text-xs text-left">
@@ -392,7 +363,6 @@
                     </div>
                 </div>
             </section>
-
         </main>
     </div>
 
@@ -415,92 +385,7 @@
         </div>
     </div>
 
-    <!-- MODAL SUSTENTO -->
-    <div id="modal-sustento" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-xl shadow-xl border border-slate-200 max-w-lg w-full p-4 space-y-3">
-            <div class="flex justify-between items-center border-b pb-2">
-                <h3 class="text-sm font-bold text-slate-800">Sustento Adjunto</h3>
-                <button onclick="cerrarModalSustento()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
-            </div>
-            <div class="flex justify-center bg-slate-100 rounded-lg p-2 max-h-96 overflow-auto">
-                <img id="modal-sustento-img" src="" class="max-w-full h-auto rounded object-contain">
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL IMPRESIÓN -->
-    <div id="modal-impresion" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-xl shadow-2xl border border-slate-200 max-w-4xl w-full max-h-[90vh] flex flex-col">
-            <div class="p-4 border-b flex justify-between items-center bg-slate-50 no-print">
-                <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
-                    <i data-lucide="printer" class="w-4 h-4 text-blue-600"></i> Previsualización de Reporte Oficial de Descuentos
-                </h3>
-                <div class="flex items-center space-x-2">
-                    <button onclick="ejecutarImpresion()" class="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5">
-                        <i data-lucide="printer" class="w-3.5 h-3.5"></i> Imprimir Documento
-                    </button>
-                    <button onclick="cerrarModalImpresion()" class="px-3 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-xs font-semibold">Cerrar</button>
-                </div>
-            </div>
-
-            <div id="printSection" class="p-8 overflow-y-auto space-y-6 text-black bg-white">
-                <div class="flex justify-between items-center border-b-2 border-blue-900 pb-4">
-                    <div class="flex items-center space-x-3">
-                        <div class="border border-slate-200 px-2 py-1 rounded-lg bg-white min-w-[110px]">
-                            <img src="logo.png" onerror="this.onerror=null; this.src='logo.jpg';" alt="Logo EsSalud" class="h-12 w-auto max-w-[120px] object-contain">
-                        </div>
-                        <div>
-                            <h2 class="text-sm font-bold tracking-tight">SEGURO SOCIAL DE SALUD - ESSALUD</h2>
-                            <p class="text-xs font-semibold text-gray-700">RED ASISTENCIAL LA LIBERTAD</p>
-                            <p class="text-xs font-bold text-blue-900">HOSPITAL I ALBRECHT</p>
-                        </div>
-                    </div>
-                    <div class="text-right text-xs">
-                        <p class="font-bold">UNIDAD DE PERSONAL</p>
-                        <p class="text-gray-600">Control de Asistencia</p>
-                        <p id="print-fecha-emision" class="text-gray-500 mt-1"></p>
-                    </div>
-                </div>
-
-                <div class="text-center space-y-1">
-                    <h1 class="text-sm font-bold uppercase underline tracking-wider">REPORTES DE DESCUENTOS POR LICENCIAS SIN GOCE Y PERMISOS</h1>
-                    <p id="print-periodo-texto" class="text-xs font-semibold text-gray-700"></p>
-                </div>
-
-                <table class="w-full text-xs border-collapse border border-gray-400">
-                    <thead>
-                        <tr class="bg-gray-100">
-                            <th class="border border-gray-400 p-2 text-left">N°</th>
-                            <th class="border border-gray-400 p-2 text-left">DNI</th>
-                            <th class="border border-gray-400 p-2 text-left">Apellidos y Nombres</th>
-                            <th class="border border-gray-400 p-2 text-left">Área / Servicio</th>
-                            <th class="border border-gray-400 p-2 text-left">Concepto</th>
-                            <th class="border border-gray-400 p-2 text-center">Días</th>
-                            <th class="border border-gray-400 p-2 text-center">Horas</th>
-                        </tr>
-                    </thead>
-                    <tbody id="print-table-body"></tbody>
-                </table>
-
-                <div class="pt-16 grid grid-cols-2 gap-12 text-center text-xs">
-                    <div>
-                        <div class="border-t border-gray-400 pt-2 font-bold">
-                            <p>Jefatura de Personal / Asistencia</p>
-                            <p class="text-gray-500 font-normal">Hospital I Albrecht - EsSalud</p>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="border-t border-gray-400 pt-2 font-bold">
-                            <p>Oficina de Remuneraciones</p>
-                            <p class="text-gray-500 font-normal">Recibido para Descuento en Planilla</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- JAVASCRIPT CON MANEJO DE ERRORES Y UUID -->
+    <!-- SCRIPT DE CONEXIÓN A SUPABASE Y LÓGICA -->
     <script>
         const SUPABASE_URL = "https://brdyfumyyecgywhxxfp.supabase.co";
         const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJyZHlmdW15eWVjY2d5d2h4eGZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE5ODkxNjgsImV4cCI6MjEwNzU2NTE2OH0.jMPHmrZsmnowfRVA7vtSSK-utinmBllIx5jHvbO7g1o";
@@ -722,8 +607,8 @@
 
             const { error } = await _supabase.from('papeletas').insert([nuevaPapeleta]);
             if (error) { 
-                console.error("Error Supabase Papeleta:", error);
-                showToast('Error', 'No se pudo guardar la papeleta en Supabase', false); 
+                alert("Error Supabase Papeleta: " + error.message);
+                showToast('Error', 'No se pudo guardar la papeleta', false); 
                 return; 
             }
 
@@ -761,16 +646,6 @@
                     </tr>
                 `;
             }).join('') || `<tr><td colspan="9" class="p-4 text-center text-slate-400">No se encontraron papeletas</td></tr>`;
-        }
-
-        function verSustento(src) { document.getElementById('modal-sustento-img').src = src; document.getElementById('modal-sustento').classList.remove('hidden'); }
-        function cerrarModalSustento() { document.getElementById('modal-sustento').classList.add('hidden'); }
-
-        async function eliminarPapeleta(id) {
-            if (confirm('¿Desea eliminar esta papeleta?')) {
-                const { error } = await _supabase.from('papeletas').delete().eq('id', id);
-                if (!error) { await loadDataFromSupabase(); showToast('Eliminado', 'Papeleta eliminada', false); }
-            }
         }
 
         function renderColaboradoresTable() {
@@ -817,7 +692,9 @@
         async function guardarColaboradorModal(e) {
             e.preventDefault();
             const id = document.getElementById('colab-id').value;
+            const newId = id || Date.now().toString();
             const payload = {
+                id: newId,
                 dni: document.getElementById('colab-dni').value,
                 nombres: document.getElementById('colab-nombres').value.toUpperCase(),
                 apellidos: document.getElementById('colab-apellidos').value.toUpperCase(),
@@ -833,14 +710,14 @@
             }
 
             if (res.error) {
-                console.error("Error Supabase Colaborador:", res.error);
+                alert("Error Supabase Colaborador: " + res.error.message);
                 showToast('Error', 'No se pudo guardar el trabajador', false);
                 return;
             }
 
             await loadDataFromSupabase();
             cerrarModalColaborador();
-            showToast('Guardado', 'Datos de personal guardados en la nube');
+            showToast('Guardado', 'Datos de personal guardados en Supabase');
         }
 
         async function eliminarColaborador(id) {
@@ -889,37 +766,6 @@
             await loadDataFromSupabase();
             showToast('Planilla Actualizada', checked ? 'Marcado como Descontado' : 'Marcado como Pendiente');
         }
-
-        function abrirModalImpresion() {
-            const mesFilter = document.getElementById('filter-mes-cierre').value || new Date().toISOString().slice(0, 7);
-            document.getElementById('print-fecha-emision').textContent = 'Fecha de emisión: ' + new Date().toLocaleDateString('es-PE');
-            document.getElementById('print-periodo-texto').textContent = 'PERÍODO DE PROCESAMIENTO: ' + mesFilter;
-
-            const tbody = document.getElementById('print-table-body');
-            const items = papeletas.filter(p => p.descuenta === 'SI' && p.fInicio.startsWith(mesFilter));
-
-            tbody.innerHTML = items.map((p, idx) => {
-                const c = colaboradores.find(col => col.id === p.colaboradorId) || { dni: 'N/A', apellidos: 'Desconocido', nombres: '', area: 'N/A' };
-                const dias = p.unidad === 'Días' ? p.cantidad : '-';
-                const horas = p.unidad === 'Horas' ? p.cantidad : '-';
-                return `
-                    <tr>
-                        <td class="border border-gray-400 p-2 text-center">${idx + 1}</td>
-                        <td class="border border-gray-400 p-2 font-mono">${c.dni}</td>
-                        <td class="border border-gray-400 p-2 font-bold">${c.apellidos}, ${c.nombres}</td>
-                        <td class="border border-gray-400 p-2">${c.area}</td>
-                        <td class="border border-gray-400 p-2">${p.tipo}</td>
-                        <td class="border border-gray-400 p-2 text-center font-bold">${dias}</td>
-                        <td class="border border-gray-400 p-2 text-center font-bold">${horas}</td>
-                    </tr>
-                `;
-            }).join('') || `<tr><td colspan="7" class="border border-gray-400 p-4 text-center text-gray-500">Sin registros pendientes de descuento en este mes.</td></tr>`;
-
-            document.getElementById('modal-impresion').classList.remove('hidden');
-        }
-
-        function cerrarModalImpresion() { document.getElementById('modal-impresion').classList.add('hidden'); }
-        function ejecutarImpresion() { window.print(); }
     </script>
 </body>
 </html>
