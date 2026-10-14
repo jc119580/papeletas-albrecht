@@ -24,7 +24,6 @@
     <!-- MODAL PANTALLA DE LOGIN -->
     <div id="login-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-md w-full overflow-hidden">
-            <!-- CABECERA LOGIN -->
             <div class="bg-blue-900 p-6 text-center text-white space-y-3">
                 <div class="bg-white p-2.5 rounded-xl inline-block shadow-md">
                     <img src="logo.png" onerror="this.onerror=null; this.src='logo.jpg';" alt="EsSalud Logo" class="h-12 w-auto mx-auto object-contain">
@@ -35,7 +34,6 @@
                 </div>
             </div>
 
-            <!-- FORMULARIO DE ACCESO -->
             <form id="form-login" onsubmit="procesarLogin(event)" class="p-6 space-y-4">
                 <div id="login-error-msg" class="hidden p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-lg font-semibold flex items-center gap-2">
                     <i data-lucide="alert-circle" class="w-4 h-4 text-red-600"></i>
@@ -66,16 +64,11 @@
                         <i data-lucide="log-in" class="w-4 h-4"></i> Iniciar Sesión
                     </button>
                 </div>
-
-                <div class="text-center pt-2 text-[11px] text-slate-400">
-                    <p class="font-medium text-slate-500">Credenciales asignadas:</p>
-                    <p>Usuario: <strong class="text-slate-700">RRHH</strong> | Clave: <strong class="text-slate-700">Albrecht.2026</strong></p>
-                </div>
             </form>
         </div>
     </div>
 
-    <!-- NOTIFICACIÓN TIPO TOAST -->
+    <!-- NOTIFICACIÓN TOAST -->
     <div id="toast-notification" class="fixed top-5 right-5 z-50 transform translate-y-[-150%] opacity-0 transition-all duration-300 ease-in-out pointer-events-none">
         <div class="bg-slate-900 text-white px-5 py-3.5 rounded-xl shadow-2xl flex items-center space-x-3 border border-slate-700">
             <div id="toast-icon-container" class="p-1 rounded-full bg-emerald-500 text-slate-900">
@@ -88,7 +81,7 @@
         </div>
     </div>
 
-    <!-- BARRA SUPERIOR -->
+    <!-- HEADER -->
     <header class="bg-blue-900 text-white shadow-md no-print sticky top-0 z-30">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between">
             <div class="flex items-center space-x-4">
@@ -116,10 +109,10 @@
         </div>
     </header>
 
-    <!-- CONTENEDOR PRINCIPAL -->
+    <!-- CONTAINER PRINCIPAL -->
     <div class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col md:flex-row gap-6">
 
-        <!-- MENÚ LATERAL -->
+        <!-- ASIDE MENU -->
         <aside class="w-full md:w-64 bg-white rounded-xl shadow-sm border border-slate-200 p-4 shrink-0 no-print flex flex-col justify-between">
             <nav class="space-y-1">
                 <button onclick="switchTab('dashboard')" id="nav-dashboard" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors bg-blue-600 text-white">
@@ -146,17 +139,17 @@
 
             <div class="mt-8 pt-4 border-t border-slate-100 text-xs text-slate-400 text-center space-y-2">
                 <p class="font-semibold text-slate-500">HOSPITAL I ALBRECHT</p>
-                <p>Gestión de Personal v4.0</p>
+                <p>Gestión de Personal v4.1</p>
                 <button onclick="cerrarSesion()" class="w-full py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-semibold flex items-center justify-center gap-1">
                     <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Cerrar Sesión
                 </button>
             </div>
         </aside>
 
-        <!-- CONTENIDO PRINCIPAL -->
+        <!-- MAIN -->
         <main class="flex-1 no-print">
 
-            <!-- VISTA 1: DASHBOARD -->
+            <!-- DASHBOARD -->
             <section id="tab-dashboard" class="space-y-6">
                 <div>
                     <h2 class="text-xl font-bold text-slate-800">Panel General de Ausentismo y Permisos</h2>
@@ -206,7 +199,7 @@
                 </div>
             </section>
 
-            <!-- VISTA 2: REGISTRO DE PAPELETA -->
+            <!-- REGISTRO PAPELETA -->
             <section id="tab-papeleta" class="hidden space-y-6">
                 <div>
                     <h2 class="text-xl font-bold text-slate-800">Registro de Papeleta Digital</h2>
@@ -286,7 +279,7 @@
                 </div>
             </section>
 
-            <!-- VISTA 3: HISTORIAL -->
+            <!-- HISTORIAL -->
             <section id="tab-historial" class="hidden space-y-6">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
@@ -318,7 +311,7 @@
                 </div>
             </section>
 
-            <!-- VISTA 4: DIRECTORIO COLABORADORES -->
+            <!-- DIRECTORIO COLABORADORES -->
             <section id="tab-colaboradores" class="hidden space-y-6">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
@@ -353,7 +346,7 @@
                 </div>
             </section>
 
-            <!-- VISTA 5: CIERRE DE PLANILLA -->
+            <!-- CIERRE PLANILLA -->
             <section id="tab-planilla" class="hidden space-y-6">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
@@ -403,7 +396,7 @@
         </main>
     </div>
 
-    <!-- MODALES -->
+    <!-- MODAL COLABORADOR -->
     <div id="modal-colaborador" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-xl shadow-xl border border-slate-200 max-w-md w-full p-6 space-y-4">
             <h3 id="modal-colaborador-title" class="text-base font-bold text-slate-800">Agregar Nuevo Colaborador</h3>
@@ -422,6 +415,7 @@
         </div>
     </div>
 
+    <!-- MODAL SUSTENTO -->
     <div id="modal-sustento" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-xl shadow-xl border border-slate-200 max-w-lg w-full p-4 space-y-3">
             <div class="flex justify-between items-center border-b pb-2">
@@ -434,7 +428,7 @@
         </div>
     </div>
 
-    <!-- MODAL IMPRESIÓN CON LOGO DE ESSALUD -->
+    <!-- MODAL IMPRESIÓN -->
     <div id="modal-impresion" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-xl shadow-2xl border border-slate-200 max-w-4xl w-full max-h-[90vh] flex flex-col">
             <div class="p-4 border-b flex justify-between items-center bg-slate-50 no-print">
@@ -506,9 +500,8 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT PRINCIPAL CON SUPABASE INTEGRADO -->
+    <!-- JAVASCRIPT CON MANEJO DE ERRORES Y UUID -->
     <script>
-        // --- 1. CONFIGURACIÓN SUPABASE ---
         const SUPABASE_URL = "https://brdyfumyyecgywhxxfp.supabase.co";
         const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJyZHlmdW15eWVjY2d5d2h4eGZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE5ODkxNjgsImV4cCI6MjEwNzU2NTE2OH0.jMPHmrZsmnowfRVA7vtSSK-utinmBllIx5jHvbO7g1o";
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -516,7 +509,6 @@
         let colaboradores = [];
         let papeletas = [];
 
-        // --- 2. AUTENTICACIÓN Y SESIÓN ---
         function checkSession() {
             const activeUser = sessionStorage.getItem('essalud_active_user');
             const loginModal = document.getElementById('login-modal');
@@ -555,15 +547,12 @@
             showToast('Sesión Cerrada', 'Se ha cerrado la sesión de usuario', false);
         }
 
-        // --- 3. CARGA DE DATOS DESDE SUPABASE ---
         async function loadDataFromSupabase() {
             try {
-                // Cargar colaboradores
                 const { data: colabData, error: colabError } = await _supabase.from('colaboradores').select('*');
                 if (colabError) throw colabError;
                 colaboradores = colabData || [];
 
-                // Cargar papeletas
                 const { data: papData, error: papError } = await _supabase.from('papeletas').select('*');
                 if (papError) throw papError;
                 papeletas = (papData || []).map(p => ({
@@ -587,7 +576,7 @@
                 renderPlanillaTable();
                 populateColaboradoresSelect();
             } catch (err) {
-                console.error("Error al conectar con Supabase:", err);
+                console.error("Error al cargar desde Supabase:", err);
             }
         }
 
@@ -614,7 +603,6 @@
             document.getElementById('filter-mes-cierre').value = now.toISOString().slice(0, 7);
         });
 
-        // --- 4. LÓGICA DE NAVEGACIÓN Y TABLAS ---
         function switchTab(tabId) {
             ['dashboard', 'papeleta', 'historial', 'colaboradores', 'planilla'].forEach(t => {
                 document.getElementById(`tab-${t}`).classList.add('hidden');
@@ -733,7 +721,11 @@
             };
 
             const { error } = await _supabase.from('papeletas').insert([nuevaPapeleta]);
-            if (error) { showToast('Error', 'No se pudo guardar la papeleta en la nube', false); return; }
+            if (error) { 
+                console.error("Error Supabase Papeleta:", error);
+                showToast('Error', 'No se pudo guardar la papeleta en Supabase', false); 
+                return; 
+            }
 
             await loadDataFromSupabase();
             showToast('¡Papeleta Registrada!', `Se guardó la papeleta ${nuevaPapeleta.id}`);
@@ -777,7 +769,7 @@
         async function eliminarPapeleta(id) {
             if (confirm('¿Desea eliminar esta papeleta?')) {
                 const { error } = await _supabase.from('papeletas').delete().eq('id', id);
-                if (!error) { await loadDataFromSupabase(); showToast('Eliminado', 'Papeleta eliminada de Supabase', false); }
+                if (!error) { await loadDataFromSupabase(); showToast('Eliminado', 'Papeleta eliminada', false); }
             }
         }
 
@@ -833,22 +825,31 @@
                 cargo: document.getElementById('colab-cargo').value
             };
 
+            let res;
             if (id) {
-                await _supabase.from('colaboradores').update(payload).eq('id', id);
+                res = await _supabase.from('colaboradores').update(payload).eq('id', id);
             } else {
-                await _supabase.from('colaboradores').insert([payload]);
+                res = await _supabase.from('colaboradores').insert([payload]);
+            }
+
+            if (res.error) {
+                console.error("Error Supabase Colaborador:", res.error);
+                showToast('Error', 'No se pudo guardar el trabajador', false);
+                return;
             }
 
             await loadDataFromSupabase();
             cerrarModalColaborador();
-            showToast('Guardado', 'Datos de personal actualizados en la nube');
+            showToast('Guardado', 'Datos de personal guardados en la nube');
         }
 
         async function eliminarColaborador(id) {
             if (confirm('¿Eliminar a este trabajador?')) {
-                await _supabase.from('colaboradores').delete().eq('id', id);
-                await loadDataFromSupabase();
-                showToast('Eliminado', 'Colaborador eliminado de Supabase', false);
+                const { error } = await _supabase.from('colaboradores').delete().eq('id', id);
+                if (!error) {
+                    await loadDataFromSupabase();
+                    showToast('Eliminado', 'Colaborador eliminado', false);
+                }
             }
         }
 
