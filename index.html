@@ -131,7 +131,7 @@
             </nav>
             <div class="mt-8 pt-4 border-t border-slate-100 text-xs text-slate-400 text-center space-y-2">
                 <p class="font-semibold text-slate-500">HOSPITAL I ALBRECHT</p>
-                <p>Gestión de Personal v4.5</p>
+                <p>Gestión de Personal v4.6</p>
                 <button onclick="cerrarSesion()" class="w-full py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-semibold flex items-center justify-center gap-1">
                     <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Cerrar Sesión
                 </button>
@@ -385,7 +385,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT CON LA URL DE SUPABASE CORREGIDA (brdyfumyyeccgywhxxfp) -->
+    <!-- SCRIPT CON SOPORTE DE UUID GENERATOR EN JAVASCRIPT -->
     <script>
         const SUPABASE_URL = "https://brdyfumyyeccgywhxxfp.supabase.co";
         const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJyZHlmdW15eWVjY2d5d2h4eGZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE5ODkxNjgsImV4cCI6MjEwNzU2NTE2OH0.jMPHmrZsmnowfRVA7vtSSK-utinmBllIx5jHvbO7g1o";
@@ -700,7 +700,10 @@
         async function guardarColaboradorModal(e) {
             e.preventDefault();
             const id = document.getElementById('colab-id').value;
+            
+            // Si es nuevo registro, genera un UUID válido para Supabase
             const payload = {
+                id: id || crypto.randomUUID(), 
                 dni: document.getElementById('colab-dni').value,
                 nombres: document.getElementById('colab-nombres').value.toUpperCase(),
                 apellidos: document.getElementById('colab-apellidos').value.toUpperCase(),
