@@ -140,7 +140,7 @@
             </nav>
             <div class="mt-8 pt-4 border-t border-slate-100 text-xs text-slate-400 text-center space-y-2">
                 <p class="font-semibold text-slate-500">HOSPITAL I ALBRECHT</p>
-                <p>Gestión de Personal v4.8</p>
+                <p>Gestión de Personal v4.9</p>
                 <button onclick="cerrarSesion()" class="w-full py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-semibold flex items-center justify-center gap-1">
                     <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Cerrar Sesión
                 </button>
@@ -303,7 +303,7 @@
                         <h2 class="text-xl font-bold text-slate-800">Directorio de Personal</h2>
                         <p class="text-xs text-slate-500">Mantenimiento de trabajadores en base de datos.</p>
                     </div>
-                    <button onclick="abrirModalColaborador()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold shadow-sm flex items-center gap-2">
+                    <button type="button" onclick="abrirModalColaborador()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold shadow-sm flex items-center gap-2">
                         <i data-lucide="user-plus" class="w-4 h-4"></i> Agregar Trabajador
                     </button>
                 </div>
@@ -335,7 +335,7 @@
                         <h2 class="text-xl font-bold text-slate-800">Cierre e Imputación de Descuentos</h2>
                         <p class="text-xs text-slate-500">Consolidado oficial para descuentos en planilla de haberes.</p>
                     </div>
-                    <button onclick="abrirModalImpresion()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold shadow-sm flex items-center gap-2">
+                    <button type="button" onclick="abrirModalImpresion()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold shadow-sm flex items-center gap-2">
                         <i data-lucide="printer" class="w-4 h-4"></i> Imprimir Reporte Oficial
                     </button>
                 </div>
@@ -383,10 +383,10 @@
                     <i data-lucide="printer" class="w-4 h-4 text-blue-600"></i> Previsualización de Reporte Oficial de Descuentos
                 </h3>
                 <div class="flex items-center space-x-2">
-                    <button onclick="ejecutarImpresion()" class="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5">
+                    <button type="button" onclick="ejecutarImpresion()" class="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5">
                         <i data-lucide="printer" class="w-3.5 h-3.5"></i> Imprimir Documento
                     </button>
-                    <button onclick="cerrarModalImpresion()" class="px-3 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-xs font-semibold">Cerrar</button>
+                    <button type="button" onclick="cerrarModalImpresion()" class="px-3 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-xs font-semibold">Cerrar</button>
                 </div>
             </div>
 
@@ -454,7 +454,7 @@
                 <h3 class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
                     <i data-lucide="image" class="w-4 h-4 text-blue-600"></i> Sustento Adjunto de la Papeleta
                 </h3>
-                <button onclick="cerrarModalSustento()" class="p-1 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100">
+                <button type="button" onclick="cerrarModalSustento()" class="p-1 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
@@ -671,7 +671,7 @@
             }
         }
 
-        // COMPRESIÓN AUTOMÁTICA DE IMÁGENES PARA GUARDAR EN BASE DE DATOS
+        // COMPRESIÓN Y LECTURA DE IMÁGENES
         let currentFotoBase64 = '';
         function previewImagen(input) {
             if (input.files && input.files[0]) {
@@ -684,14 +684,13 @@
                         const canvas = document.createElement('canvas');
                         const ctx = canvas.getContext('2d');
                         
-                        // Redimensionar imagen para optimizar almacenamiento en Supabase
                         const maxWidth = 800;
                         const scaleSize = maxWidth / img.width;
                         canvas.width = (img.width > maxWidth) ? maxWidth : img.width;
                         canvas.height = (img.width > maxWidth) ? (img.height * scaleSize) : img.height;
                         
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        currentFotoBase64 = canvas.toDataURL('image/jpeg', 0.7); // Compresión al 70%
+                        currentFotoBase64 = canvas.toDataURL('image/jpeg', 0.7);
                         
                         document.getElementById('img-preview').src = currentFotoBase64;
                         document.getElementById('container-preview').classList.remove('hidden');
@@ -751,6 +750,7 @@
 
             tbody.innerHTML = filtered.map(p => {
                 const c = colaboradores.find(col => col.id === p.colaboradorId) || { dni: 'N/A', apellidos: 'Desconocido', nombres: '', area: 'N/A' };
+                const tieneFoto = p.foto && p.foto.trim().length > 10;
                 return `
                     <tr class="hover:bg-slate-50">
                         <td class="p-3 font-bold text-blue-900">${p.id}</td>
@@ -759,19 +759,19 @@
                         <td class="p-3 font-medium text-slate-800">${p.tipo}</td>
                         <td class="p-3 text-center text-slate-600">${p.fInicio} / ${p.fFin}</td>
                         <td class="p-3 text-center font-bold text-red-600">${p.descuenta === 'SI' ? p.cantidad + ' ' + p.unidad : 'No aplica'}</td>
-                        <td class="p-3 text-center">${p.foto && p.foto.startsWith('data:image') ? `<button onclick="verSustento('${p.id}')" class="px-2 py-1 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded font-semibold text-xs border border-blue-200">Ver Imagen</button>` : '<span class="text-slate-400">Sin foto</span>'}</td>
+                        <td class="p-3 text-center">${tieneFoto ? `<button type="button" onclick="verSustento('${p.id}')" class="px-2 py-1 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded font-semibold text-xs border border-blue-200 shadow-sm">Ver Imagen</button>` : '<span class="text-slate-400">Sin foto</span>'}</td>
                         <td class="p-3 text-center">
                             <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${p.procesadoPlanilla ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
                                 ${p.procesadoPlanilla ? 'PROCESADO' : 'PENDIENTE'}
                             </span>
                         </td>
-                        <td class="p-3 text-center"><button onclick="eliminarPapeleta('${p.id}')" class="text-red-500 hover:text-red-700 font-semibold text-xs">Eliminar</button></td>
+                        <td class="p-3 text-center"><button type="button" onclick="eliminarPapeleta('${p.id}')" class="text-red-500 hover:text-red-700 font-semibold text-xs">Eliminar</button></td>
                     </tr>
                 `;
             }).join('') || `<tr><td colspan="9" class="p-4 text-center text-slate-400">No se encontraron papeletas</td></tr>`;
         }
 
-        // FUNCIONES PARA VISUALIZAR FOTO DE SUSTENTO
+        // FUNCIONES DE VISUALIZACIÓN DE FOTO
         function verSustento(papId) {
             const pap = papeletas.find(p => p.id === papId);
             if (pap && pap.foto) {
@@ -779,7 +779,7 @@
                 imgElement.src = pap.foto;
                 document.getElementById('modal-sustento').classList.remove('hidden');
             } else {
-                alert("No hay foto adjunta para esta papeleta.");
+                alert("Esta papeleta no contiene una foto o escaneo adjunto.");
             }
         }
 
@@ -809,8 +809,8 @@
                     <td class="p-3 text-slate-600">${c.area}</td>
                     <td class="p-3 text-slate-600">${c.cargo}</td>
                     <td class="p-3 text-center space-x-2">
-                        <button onclick="editarColaborador('${c.id}')" class="text-blue-600 hover:underline font-semibold">Editar</button>
-                        <button onclick="eliminarColaborador('${c.id}')" class="text-red-600 hover:underline font-semibold">Eliminar</button>
+                        <button type="button" onclick="editarColaborador('${c.id}')" class="text-blue-600 hover:underline font-semibold">Editar</button>
+                        <button type="button" onclick="eliminarColaborador('${c.id}')" class="text-red-600 hover:underline font-semibold">Eliminar</button>
                     </td>
                 </tr>
             `).join('') || `<tr><td colspan="5" class="p-4 text-center text-slate-400">No hay personal registrado</td></tr>`;
@@ -915,17 +915,17 @@
             showToast('Planilla Actualizada', checked ? 'Marcado como Descontado' : 'Marcado como Pendiente');
         }
 
-        // --- LÓGICA DE IMPRESIÓN DEL REPORTE OFICIAL ---
+        // --- LÓGICA DE IMPRESIÓN CORREGIDA ---
         function abrirModalImpresion() {
             const mesInput = document.getElementById('filter-mes-cierre').value;
-            const mesTexto = mesInput ? mesInput : 'GENERAL';
+            const mesTexto = mesInput ? mesInput : 'CONSOLIDADO GENERAL';
             
             document.getElementById('print-fecha-emision').textContent = 'Fecha de emisión: ' + new Date().toLocaleDateString('es-PE');
             document.getElementById('print-periodo-texto').textContent = 'PERÍODO DE PROCESAMIENTO: ' + mesTexto;
 
             const tbody = document.getElementById('print-table-body');
             
-            // Obtener papeletas con descuento (filtrando por mes si está definido, o todas si no)
+            // Papeletas sujetas a descuento
             const items = papeletas.filter(p => p.descuenta === 'SI' && (!mesInput || (p.fInicio && p.fInicio.startsWith(mesInput))));
 
             tbody.innerHTML = items.map((p, idx) => {
