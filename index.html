@@ -45,7 +45,7 @@
 
             <form id="form-login" onsubmit="procesarLogin(event)" class="p-6 space-y-4">
                 <div id="login-error-msg" class="hidden p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-lg font-semibold flex items-center gap-2">
-                    <i data-lucide="alert-circle" class="w-4 h-4 text-red-600"></i>
+                    <i data-lucide="alert-circle" class="w-4 h-4 text-red-600 shrink-0"></i>
                     <span id="login-error-text">Usuario o contraseña incorrectos.</span>
                 </div>
 
@@ -143,7 +143,7 @@
             </nav>
             <div class="mt-8 pt-4 border-t border-slate-100 text-xs text-slate-400 text-center space-y-2">
                 <p class="font-semibold text-slate-500">HOSPITAL I ALBRECHT</p>
-                <p>Gestión de Personal v5.2</p>
+                <p>Gestión de Personal v5.3</p>
                 <button onclick="cerrarSesion()" class="w-full py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-semibold flex items-center justify-center gap-1">
                     <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Cerrar Sesión
                 </button>
@@ -521,7 +521,7 @@
     <!-- SCRIPT PRINCIPAL CON SUPABASE AUTH & USERS DB -->
     <script>
         const SUPABASE_URL = "https://brdyfumyyeccgywhxxfp.supabase.co";
-        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJyZHlmdW15eWVjY2d5d2h4eGZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE5ODkxNjgsImV4cCI6MjE0NzU2NTE2OH0.jMPHmrZsmnowfRVA7vtSSK-utinmBllIx5jHvbO7g1o";
+        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJyZHlmdW15eWVjY2d5d2h4eGZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE5ODkxNjgsImV4cCI6MjEwNzU2NTE2OH0.jMPHmrZsmnowfRVA7vtSSK-utinmBllIx5jHvbO7g1o";
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         let colaboradores = [];
@@ -561,7 +561,7 @@
             }
         }
 
-        // LOGIN CON CONSULTA DIRECTA A SUPABASE
+        // LOGIN CON CONSULTA DIRECTA Y MANEJO DE ERRORES MEJORADO
         async function procesarLogin(e) {
             e.preventDefault();
             const user = document.getElementById('login-user').value.trim();
@@ -579,9 +579,13 @@
                     .select('*')
                     .eq('usuario', user)
                     .eq('password', pass)
-                    .single();
+                    .maybeSingle();
 
-                if (error || !data) {
+                if (error) {
+                    console.error("Error Supabase:", error);
+                    errorText.textContent = "Error al verificar datos: " + error.message;
+                    errorMsg.classList.remove('hidden');
+                } else if (!data) {
                     errorText.textContent = "Usuario o contraseña incorrectos.";
                     errorMsg.classList.remove('hidden');
                 } else {
@@ -654,7 +658,7 @@
                     .select('*')
                     .eq('usuario', currentUserId)
                     .eq('password', passActualInput)
-                    .single();
+                    .maybeSingle();
 
                 if (error || !data) {
                     alert("La contraseña actual introducida es incorrecta.");
