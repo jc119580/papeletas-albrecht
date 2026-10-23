@@ -46,7 +46,7 @@
             <form id="form-login" onsubmit="procesarLogin(event)" class="p-6 space-y-4">
                 <div id="login-error-msg" class="hidden p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-lg font-semibold flex items-center gap-2">
                     <i data-lucide="alert-circle" class="w-4 h-4 text-red-600"></i>
-                    <span>Usuario o contraseña incorrectos.</span>
+                    <span id="login-error-text">Usuario o contraseña incorrectos.</span>
                 </div>
 
                 <div>
@@ -62,14 +62,14 @@
                     <div class="relative">
                         <i data-lucide="lock" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
                         <input type="password" id="login-password" required placeholder="••••••••" class="w-full text-xs pl-9 pr-9 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                        <button type="button" onclick="togglePassVisibility()" class="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600">
+                        <button type="button" onclick="togglePassVisibility('login-password', 'icon-eye')" class="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600">
                             <i data-lucide="eye" id="icon-eye" class="w-4 h-4"></i>
                         </button>
                     </div>
                 </div>
 
                 <div class="pt-2">
-                    <button type="submit" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold shadow-md transition-all flex items-center justify-center gap-2">
+                    <button type="submit" id="btn-login-submit" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold shadow-md transition-all flex items-center justify-center gap-2">
                         <i data-lucide="log-in" class="w-4 h-4"></i> Iniciar Sesión
                     </button>
                 </div>
@@ -109,6 +109,9 @@
                 <div class="flex items-center space-x-3 border-l border-blue-800 pl-4">
                     <div class="w-8 h-8 rounded-full bg-blue-700 flex items-center justify-center font-bold text-xs border border-blue-400">HA</div>
                     <span id="user-display-name" class="font-medium text-xs hidden lg:inline">RRHH Albrecht</span>
+                    <button onclick="abrirModalPassword()" class="p-1.5 bg-blue-800 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold transition-colors flex items-center gap-1 shadow-sm" title="Cambiar Contraseña">
+                        <i data-lucide="key-round" class="w-3.5 h-3.5"></i> <span class="hidden sm:inline">Clave</span>
+                    </button>
                     <button onclick="cerrarSesion()" class="p-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-semibold transition-colors flex items-center gap-1 shadow-sm">
                         <i data-lucide="log-out" class="w-3.5 h-3.5"></i> <span class="hidden sm:inline">Salir</span>
                     </button>
@@ -140,7 +143,7 @@
             </nav>
             <div class="mt-8 pt-4 border-t border-slate-100 text-xs text-slate-400 text-center space-y-2">
                 <p class="font-semibold text-slate-500">HOSPITAL I ALBRECHT</p>
-                <p>Gestión de Personal v4.9</p>
+                <p>Gestión de Personal v5.2</p>
                 <button onclick="cerrarSesion()" class="w-full py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-semibold flex items-center justify-center gap-1">
                     <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Cerrar Sesión
                 </button>
@@ -303,7 +306,7 @@
                         <h2 class="text-xl font-bold text-slate-800">Directorio de Personal</h2>
                         <p class="text-xs text-slate-500">Mantenimiento de trabajadores en base de datos.</p>
                     </div>
-                    <button type="button" onclick="abrirModalColaborador()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold shadow-sm flex items-center gap-2">
+                    <button id="btn-modal-colaborador" type="button" onclick="abrirModalColaborador()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold shadow-sm flex items-center gap-2">
                         <i data-lucide="user-plus" class="w-4 h-4"></i> Agregar Trabajador
                     </button>
                 </div>
@@ -447,6 +450,38 @@
         </div>
     </div>
 
+    <!-- MODAL CAMBIAR CONTRASEÑA -->
+    <div id="modal-password" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-xl border border-slate-200 max-w-sm w-full p-6 space-y-4">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h3 class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
+                    <i data-lucide="key-round" class="w-4 h-4 text-blue-600"></i> Cambiar Contraseña (Supabase)
+                </h3>
+                <button type="button" onclick="cerrarModalPassword()" class="p-1 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+            <form id="form-password" onsubmit="guardarNuevaPassword(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Contraseña Actual *</label>
+                    <input type="password" id="pass-actual" required class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Nueva Contraseña *</label>
+                    <input type="password" id="pass-nueva" required class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Confirmar Nueva Contraseña *</label>
+                    <input type="password" id="pass-confirmar" required class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                </div>
+                <div class="pt-3 flex justify-end space-x-2">
+                    <button type="button" onclick="cerrarModalPassword()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold">Cancelar</button>
+                    <button type="submit" id="btn-pass-submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold">Guardar Cambio</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- MODAL SUSTENTO / VISUALIZADOR DE IMAGEN -->
     <div id="modal-sustento" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-xl shadow-2xl border border-slate-200 max-w-2xl w-full p-4 space-y-3">
@@ -483,51 +518,167 @@
         </div>
     </div>
 
-    <!-- SCRIPT PRINCIPAL -->
+    <!-- SCRIPT PRINCIPAL CON SUPABASE AUTH & USERS DB -->
     <script>
         const SUPABASE_URL = "https://brdyfumyyeccgywhxxfp.supabase.co";
-        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJyZHlmdW15eWVjY2d5d2h4eGZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE5ODkxNjgsImV4cCI6MjEwNzU2NTE2OH0.jMPHmrZsmnowfRVA7vtSSK-utinmBllIx5jHvbO7g1o";
+        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJyZHlmdW15eWVjY2d5d2h4eGZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE5ODkxNjgsImV4cCI6MjE0NzU2NTE2OH0.jMPHmrZsmnowfRVA7vtSSK-utinmBllIx5jHvbO7g1o";
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         let colaboradores = [];
         let papeletas = [];
+        window.esUsuarioAdmin = false;
 
         function checkSession() {
             const activeUser = sessionStorage.getItem('essalud_active_user');
+            const userRole = sessionStorage.getItem('essalud_user_role') || 'READONLY';
             const loginModal = document.getElementById('login-modal');
+            
             if (activeUser) {
                 loginModal.classList.add('hidden');
-                document.getElementById('user-display-name').textContent = activeUser;
+                document.getElementById('user-display-name').textContent = `${activeUser} (${userRole})`;
+                aplicarPermisosPorRol(userRole);
             } else {
                 loginModal.classList.remove('hidden');
             }
         }
 
-        function procesarLogin(e) {
+        function aplicarPermisosPorRol(role) {
+            window.esUsuarioAdmin = (role === 'ADMIN');
+
+            const navPapeleta = document.getElementById('nav-papeleta');
+            if (navPapeleta) {
+                navPapeleta.style.display = window.esUsuarioAdmin ? 'flex' : 'none';
+            }
+
+            const btnAgregarColab = document.getElementById('btn-modal-colaborador');
+            if (btnAgregarColab) {
+                btnAgregarColab.style.display = window.esUsuarioAdmin ? 'flex' : 'none';
+            }
+
+            const tabPapeleta = document.getElementById('tab-papeleta');
+            if (!window.esUsuarioAdmin && tabPapeleta && !tabPapeleta.classList.contains('hidden')) {
+                switchTab('dashboard');
+            }
+        }
+
+        // LOGIN CON CONSULTA DIRECTA A SUPABASE
+        async function procesarLogin(e) {
             e.preventDefault();
             const user = document.getElementById('login-user').value.trim();
             const pass = document.getElementById('login-password').value;
             const errorMsg = document.getElementById('login-error-msg');
+            const errorText = document.getElementById('login-error-text');
+            const btnSubmit = document.getElementById('btn-login-submit');
 
-            if (user === 'RRHH' && pass === 'Albrecht.2026') {
-                errorMsg.classList.add('hidden');
-                sessionStorage.setItem('essalud_active_user', 'RRHH Albrecht');
-                checkSession();
-                showToast('¡Bienvenido!', 'Sesión iniciada correctamente');
-            } else {
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = 'Verificando...';
+
+            try {
+                const { data, error } = await _supabase
+                    .from('usuarios')
+                    .select('*')
+                    .eq('usuario', user)
+                    .eq('password', pass)
+                    .single();
+
+                if (error || !data) {
+                    errorText.textContent = "Usuario o contraseña incorrectos.";
+                    errorMsg.classList.remove('hidden');
+                } else {
+                    errorMsg.classList.add('hidden');
+                    sessionStorage.setItem('essalud_active_user', data.nombre);
+                    sessionStorage.setItem('essalud_user_id', data.usuario);
+                    sessionStorage.setItem('essalud_user_role', data.rol);
+                    checkSession();
+                    loadDataFromSupabase();
+                    showToast('¡Bienvenido!', `Sesión iniciada como ${data.nombre}`);
+                }
+            } catch (err) {
+                errorText.textContent = "Error de conexión a la base de datos.";
                 errorMsg.classList.remove('hidden');
+            } finally {
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = '<i data-lucide="log-in" class="w-4 h-4"></i> Iniciar Sesión';
+                lucide.createIcons();
             }
         }
 
-        function togglePassVisibility() {
-            const input = document.getElementById('login-password');
+        function togglePassVisibility(inputId, iconId) {
+            const input = document.getElementById(inputId);
             input.type = input.type === 'password' ? 'text' : 'password';
         }
 
         function cerrarSesion() {
             sessionStorage.removeItem('essalud_active_user');
+            sessionStorage.removeItem('essalud_user_id');
+            sessionStorage.removeItem('essalud_user_role');
             checkSession();
             showToast('Sesión Cerrada', 'Se ha cerrado la sesión de usuario', false);
+        }
+
+        // CAMBIAR CONTRASEÑA DIRECTAMENTE EN SUPABASE
+        function abrirModalPassword() {
+            document.getElementById('form-password').reset();
+            document.getElementById('modal-password').classList.remove('hidden');
+        }
+
+        function cerrarModalPassword() {
+            document.getElementById('modal-password').classList.add('hidden');
+        }
+
+        async function guardarNuevaPassword(e) {
+            e.preventDefault();
+            const currentUserId = sessionStorage.getItem('essalud_user_id');
+            const passActualInput = document.getElementById('pass-actual').value;
+            const passNueva = document.getElementById('pass-nueva').value;
+            const passConfirmar = document.getElementById('pass-confirmar').value;
+            const btnSubmit = document.getElementById('btn-pass-submit');
+
+            if (passNueva.length < 6) {
+                alert("La nueva contraseña debe tener al menos 6 caracteres.");
+                return;
+            }
+
+            if (passNueva !== passConfirmar) {
+                alert("La nueva contraseña y su confirmación no coinciden.");
+                return;
+            }
+
+            btnSubmit.disabled = true;
+            btnSubmit.textContent = "Guardando...";
+
+            try {
+                // 1. Validar la clave actual del usuario en Supabase
+                const { data, error } = await _supabase
+                    .from('usuarios')
+                    .select('*')
+                    .eq('usuario', currentUserId)
+                    .eq('password', passActualInput)
+                    .single();
+
+                if (error || !data) {
+                    alert("La contraseña actual introducida es incorrecta.");
+                    return;
+                }
+
+                // 2. Actualizar la clave en Supabase
+                const { error: updateError } = await _supabase
+                    .from('usuarios')
+                    .update({ password: passNueva })
+                    .eq('usuario', currentUserId);
+
+                if (updateError) {
+                    alert("Error al actualizar contraseña: " + updateError.message);
+                } else {
+                    cerrarModalPassword();
+                    showToast("Contraseña Actualizada", "Su clave se guardó en Supabase. Ahora puede ingresar desde cualquier PC con su nueva contraseña.");
+                }
+            } catch (err) {
+                alert("Error al procesar la solicitud.");
+            } finally {
+                btnSubmit.disabled = false;
+                btnSubmit.textContent = "Guardar Cambio";
+            }
         }
 
         async function loadDataFromSupabase() {
@@ -671,7 +822,6 @@
             }
         }
 
-        // COMPRESIÓN Y LECTURA DE IMÁGENES
         let currentFotoBase64 = '';
         function previewImagen(input) {
             if (input.files && input.files[0]) {
@@ -711,6 +861,11 @@
 
         async function guardarPapeleta(e) {
             e.preventDefault();
+            if (!window.esUsuarioAdmin) {
+                alert("No tiene permisos para realizar esta acción.");
+                return;
+            }
+
             const colabId = document.getElementById('papeleta-colaborador-id').value;
             if(!colabId) { showToast('Atención', 'Por favor seleccione un trabajador', false); return; }
 
@@ -751,6 +906,11 @@
             tbody.innerHTML = filtered.map(p => {
                 const c = colaboradores.find(col => col.id === p.colaboradorId) || { dni: 'N/A', apellidos: 'Desconocido', nombres: '', area: 'N/A' };
                 const tieneFoto = p.foto && p.foto.trim().length > 10;
+                
+                const accionEliminar = window.esUsuarioAdmin 
+                    ? `<button type="button" onclick="eliminarPapeleta('${p.id}')" class="text-red-500 hover:text-red-700 font-semibold text-xs">Eliminar</button>` 
+                    : `<span class="text-slate-400 text-[10px]">Sin permisos</span>`;
+
                 return `
                     <tr class="hover:bg-slate-50">
                         <td class="p-3 font-bold text-blue-900">${p.id}</td>
@@ -765,13 +925,12 @@
                                 ${p.procesadoPlanilla ? 'PROCESADO' : 'PENDIENTE'}
                             </span>
                         </td>
-                        <td class="p-3 text-center"><button type="button" onclick="eliminarPapeleta('${p.id}')" class="text-red-500 hover:text-red-700 font-semibold text-xs">Eliminar</button></td>
+                        <td class="p-3 text-center">${accionEliminar}</td>
                     </tr>
                 `;
             }).join('') || `<tr><td colspan="9" class="p-4 text-center text-slate-400">No se encontraron papeletas</td></tr>`;
         }
 
-        // FUNCIONES DE VISUALIZACIÓN DE FOTO
         function verSustento(papId) {
             const pap = papeletas.find(p => p.id === papId);
             if (pap && pap.foto) {
@@ -788,6 +947,11 @@
         }
 
         async function eliminarPapeleta(id) {
+            if (!window.esUsuarioAdmin) {
+                alert("No tiene permisos para realizar esta acción.");
+                return;
+            }
+
             if (confirm('¿Desea eliminar esta papeleta?')) {
                 const { error } = await _supabase.from('papeletas').delete().eq('id', id);
                 if (!error) {
@@ -802,21 +966,26 @@
             const tbody = document.getElementById('colaboradores-table-body');
             const filtered = colaboradores.filter(c => c.dni.includes(search) || c.nombres.toLowerCase().includes(search) || c.apellidos.toLowerCase().includes(search) || c.area.toLowerCase().includes(search));
 
-            tbody.innerHTML = filtered.map(c => `
-                <tr class="hover:bg-slate-50">
-                    <td class="p-3 font-bold text-slate-800">${c.dni}</td>
-                    <td class="p-3 font-medium text-slate-900">${c.apellidos}, ${c.nombres}</td>
-                    <td class="p-3 text-slate-600">${c.area}</td>
-                    <td class="p-3 text-slate-600">${c.cargo}</td>
-                    <td class="p-3 text-center space-x-2">
-                        <button type="button" onclick="editarColaborador('${c.id}')" class="text-blue-600 hover:underline font-semibold">Editar</button>
-                        <button type="button" onclick="eliminarColaborador('${c.id}')" class="text-red-600 hover:underline font-semibold">Eliminar</button>
-                    </td>
-                </tr>
-            `).join('') || `<tr><td colspan="5" class="p-4 text-center text-slate-400">No hay personal registrado</td></tr>`;
+            tbody.innerHTML = filtered.map(c => {
+                const accionesColab = window.esUsuarioAdmin ? `
+                    <button type="button" onclick="editarColaborador('${c.id}')" class="text-blue-600 hover:underline font-semibold">Editar</button>
+                    <button type="button" onclick="eliminarColaborador('${c.id}')" class="text-red-600 hover:underline font-semibold">Eliminar</button>
+                ` : `<span class="text-slate-400 text-[10px]">Sin permisos</span>`;
+
+                return `
+                    <tr class="hover:bg-slate-50">
+                        <td class="p-3 font-bold text-slate-800">${c.dni}</td>
+                        <td class="p-3 font-medium text-slate-900">${c.apellidos}, ${c.nombres}</td>
+                        <td class="p-3 text-slate-600">${c.area}</td>
+                        <td class="p-3 text-slate-600">${c.cargo}</td>
+                        <td class="p-3 text-center space-x-2">${accionesColab}</td>
+                    </tr>
+                `;
+            }).join('') || `<tr><td colspan="5" class="p-4 text-center text-slate-400">No hay personal registrado</td></tr>`;
         }
 
         function abrirModalColaborador() {
+            if (!window.esUsuarioAdmin) return;
             document.getElementById('form-modal-colaborador').reset();
             document.getElementById('colab-id').value = '';
             document.getElementById('modal-colaborador-title').textContent = 'Agregar Nuevo Colaborador';
@@ -826,6 +995,7 @@
         function cerrarModalColaborador() { document.getElementById('modal-colaborador').classList.add('hidden'); }
 
         function editarColaborador(id) {
+            if (!window.esUsuarioAdmin) return;
             const c = colaboradores.find(item => item.id === id);
             if (!c) return;
             document.getElementById('colab-id').value = c.id;
@@ -840,6 +1010,11 @@
 
         async function guardarColaboradorModal(e) {
             e.preventDefault();
+            if (!window.esUsuarioAdmin) {
+                alert("No tiene permisos para realizar esta acción.");
+                return;
+            }
+
             const id = document.getElementById('colab-id').value;
             
             const payload = {
@@ -869,6 +1044,11 @@
         }
 
         async function eliminarColaborador(id) {
+            if (!window.esUsuarioAdmin) {
+                alert("No tiene permisos para realizar esta acción.");
+                return;
+            }
+
             if (confirm('¿Eliminar a este trabajador?')) {
                 const { error } = await _supabase.from('colaboradores').delete().eq('id', id);
                 if (!error) {
@@ -893,6 +1073,8 @@
 
             tbody.innerHTML = filtered.map(p => {
                 const c = colaboradores.find(col => col.id === p.colaboradorId) || { dni: 'N/A', apellidos: 'Desconocido', nombres: '', area: 'N/A' };
+                const disabledAttr = !window.esUsuarioAdmin ? 'disabled' : '';
+
                 return `
                     <tr class="hover:bg-slate-50">
                         <td class="p-3 font-bold text-slate-800">${c.dni}</td>
@@ -902,7 +1084,7 @@
                         <td class="p-3 text-center text-slate-600">${p.fInicio} a ${p.fFin}</td>
                         <td class="p-3 text-center font-bold text-red-600 bg-red-50/50">${p.cantidad} ${p.unidad}</td>
                         <td class="p-3 text-center">
-                            <input type="checkbox" ${p.procesadoPlanilla ? 'checked' : ''} onchange="toggleProcesado('${p.id}', this.checked)" class="w-4 h-4 text-blue-600 rounded">
+                            <input type="checkbox" ${p.procesadoPlanilla ? 'checked' : ''} ${disabledAttr} onchange="toggleProcesado('${p.id}', this.checked)" class="w-4 h-4 text-blue-600 rounded">
                         </td>
                     </tr>
                 `;
@@ -910,12 +1092,16 @@
         }
 
         async function toggleProcesado(id, checked) {
+            if (!window.esUsuarioAdmin) {
+                alert("No tiene permisos para modificar la planilla.");
+                return;
+            }
+
             await _supabase.from('papeletas').update({ procesado_planilla: checked }).eq('id', id);
             await loadDataFromSupabase();
             showToast('Planilla Actualizada', checked ? 'Marcado como Descontado' : 'Marcado como Pendiente');
         }
 
-        // --- LÓGICA DE IMPRESIÓN CORREGIDA ---
         function abrirModalImpresion() {
             const mesInput = document.getElementById('filter-mes-cierre').value;
             const mesTexto = mesInput ? mesInput : 'CONSOLIDADO GENERAL';
@@ -924,8 +1110,6 @@
             document.getElementById('print-periodo-texto').textContent = 'PERÍODO DE PROCESAMIENTO: ' + mesTexto;
 
             const tbody = document.getElementById('print-table-body');
-            
-            // Papeletas sujetas a descuento
             const items = papeletas.filter(p => p.descuenta === 'SI' && (!mesInput || (p.fInicio && p.fInicio.startsWith(mesInput))));
 
             tbody.innerHTML = items.map((p, idx) => {
